@@ -52,6 +52,6 @@ public class DevicePost implements RequestHandler<DevicePost.Request, String> {
                 .item(item)
                 .build());
 
-        return String.format("{ deviceID: %s }", item.get("deviceID"));
+        return String.format("{ deviceID: %s }", item.get("deviceID").s());
     }
 }

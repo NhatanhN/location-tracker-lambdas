@@ -52,7 +52,8 @@ public class LocationPost implements RequestHandler<LocationPost.Request, String
             throw new RuntimeException(errMsg);
         }
 
-        String passkey = deviceRes.item().get("deviceID").s();
+        String passkey = deviceRes.item().get("passkey").s();
+        
         if (!passkey.equals(input.passkey)) {
             throw new RuntimeException("passwords do not match");
         }

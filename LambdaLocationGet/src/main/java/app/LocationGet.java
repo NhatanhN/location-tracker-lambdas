@@ -58,12 +58,14 @@ public class LocationGet implements RequestHandler<LocationGet.Request, String> 
             throw new RuntimeException(errMsg);
         }
 
-        String passkey = deviceRes.item().get("deviceID").s();
+        String passkey = deviceRes.item().get("passkey").s();
         if (!passkey.equals(input.passkey)) {
             throw new RuntimeException("passwords do not match");
         }
 
         // get locations
+        map.clear();
+        map.put(":deviceID", AttributeValue.fromS(input.deviceID));
         ScanRequest locReq = ScanRequest.builder()
                 .tableName(locationTable)
                 .filterExpression("deviceID = :deviceID")
@@ -81,7 +83,7 @@ public class LocationGet implements RequestHandler<LocationGet.Request, String> 
             json.append(String.format("{longitude: %s, latitude: %s, timestamp: %s}, ",
                     i.get("logitude").n(), i.get("latitude").n(), i.get("timestamp").n()));
         }
-        json.deleteCharAt(json.length() - 1);
+        json.deleteCharAt(json.length() - 2);
         json.append("] }");
 
         return json.toString();
